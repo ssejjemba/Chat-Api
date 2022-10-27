@@ -1,0 +1,25 @@
+{
+  "name": "chat-api",
+  "version": "1.0.0",
+  "description": "This is a simple chat api with authetication in node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssejjemba/Chat-Api.git"
+  },
+  "keywords": [
+    "chat",
+    "auth",
+    "api",
+    "node"
+  ],
+  "author": "Daniel Ssejjemba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ssejjemba/Chat-Api/issues"
+  },
+  "homepage": "https://github.com/ssejjemba/Chat-Api#readme"
+}
