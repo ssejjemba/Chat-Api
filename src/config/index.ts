@@ -1,23 +1,36 @@
-[
-  // required environment variables
-  'NODE_ENV',
-  'PORT',
-].forEach((name: string) => {
-  if (!process.env[name]) {
-    throw new Error(`Environment variable ${name} is missing`);
-  }
-});
+const joi = require('joi');
+
+const envVarsSchema = joi
+  .object({
+    NODE_ENV: joi
+      .string()
+      .allow(['development', 'production', 'test', 'provision'])
+      .required(),
+    PORT: joi.number().required(),
+    LOGGER_LEVEL: joi
+      .string()
+      .allow(['error', 'warn', 'info', 'verbose', 'debug', 'silly'])
+      .default('info'),
+    LOGGER_ENABLED: joi.boolean().truthy('true').falsy('false').default(true),
+  })
+  .unknown()
+  .required();
+
+const { error, value: envVars } = joi.validate(process.env, envVarsSchema);
+if (error) {
+  throw new Error(`Config validation error: ${error.message}`);
+}
 
 const config = {
-  env: process.env.NODE_ENV,
+  env: envVars.NODE_ENV,
+  isTest: envVars.NODE_ENV === 'test',
+  isDevelopment: envVars.NODE_ENV === 'development',
   logger: {
-    level: process.env.LOG_LEVEL || 'info',
-    enabled: process.env.BOOLEAN
-      ? process.env.BOOLEAN.toLowerCase() === 'true'
-      : false,
+    level: envVars.LOGGER_LEVEL,
+    enabled: envVars.LOGGER_ENABLED,
   },
   server: {
-    port: Number(process.env.PORT),
+    port: envVars.PORT,
   },
   // ...
 };
